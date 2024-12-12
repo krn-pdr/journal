@@ -1,0 +1,24 @@
+{
+  "name": "journal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sever.js",
+  "engines": {
+    "node": "21.x"
+  },
+  "scripts": {
+    "start": "node ./server.js",
+    "build": "npm install --legacy-peer-deps"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-async-handler": "^1.2.0",
+    "mongoose": "^8.8.1",
+    "nodemon": "^3.1.7"
+  }
+}
