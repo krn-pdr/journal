@@ -4,7 +4,7 @@
   "description": "",
   "main": "sever.js",
   "engines": {
-    "node": "21.x"
+    "node": "22.x"
   },
   "scripts": {
     "start": "node ./server.js",
