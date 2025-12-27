@@ -1,124 +1,172 @@
-import { useState } from "react";
-import "./ApprovalTable.css";
+<tbody>
+  {rows.length === 0 && (
+    <tr>
+      <td colSpan="7" className="empty">
+        No records found
+      </td>
+    </tr>
+  )}
 
-const STATUS_MAP = {
-  Approved: "approved",
-  Rejected: "rejected",
-  Pending: "pending",
-  SupervisorApproved: "pending",
-};
+  {rows.map((item) => (
+    <tr key={item.id}>
+      {/* REQUEST ID */}
+      <td>
+        <a href="#" className="request-link">
+          REQ-{item.id.toString().padStart(4, "0")}
+        </a>
+      </td>
 
-export default function ApprovalTable({ data }) {
-  const [activeTab, setActiveTab] = useState("All");
-  const [search, setSearch] = useState("");
+      {/* PART NAME */}
+      <td className="bold">{item.partName}</td>
 
-  const filteredData = data.filter((item) => {
-    const matchesTab =
-      activeTab === "All" ||
-      item.status.toLowerCase() === activeTab.toLowerCase();
+      {/* PART ID */}
+      <td className="muted">{item.partId}</td>
 
-    const matchesSearch =
-      item.partName.toLowerCase().includes(search.toLowerCase()) ||
-      item.partId.toLowerCase().includes(search.toLowerCase());
-
-    return matchesTab && matchesSearch;
-  });
-
-  return (
-    <div className="table-wrapper">
-      <h2 className="title">My Approval Requests</h2>
-      <p className="subtitle">
-        Manage and track status of your submitted approval requests.
-      </p>
-
-      {/* Toolbar */}
-      <div className="toolbar">
-        <div className="tabs">
-          {["All", "Pending", "Approved", "Rejected"].map((tab) => (
-            <button
-              key={tab}
-              className={`tab ${activeTab === tab ? "active" : ""}`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-
-        <input
-          className="search"
-          type="text"
-          placeholder="Search by Part Name or ID..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-
-      {/* Table */}
-      <table className="approval-table">
-        <thead>
-          <tr>
-            <th>Request ID</th>
-            <th>Part Name</th>
-            <th>Part ID</th>
-            <th>Current Level</th>
-            <th>Status</th>
-            <th>Last Updated</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {filteredData.length === 0 && (
-            <tr>
-              <td colSpan="7" className="empty">
-                No records found
-              </td>
-            </tr>
-          )}
-
-          {filteredData.map((item) => (
-            <tr key={item.id}>
-              <td>{`REQ-${item.id.toString().padStart(4, "0")}`}</td>
-              <td className="bold">{item.partName}</td>
-              <td>{item.partId}</td>
-              <td>
-                {item.actionBySeniorManager
-                  ? "Completed"
-                  : item.actionByManager
-                  ? "Senior Manager"
-                  : item.actionBySuperVisor
-                  ? "Manager"
-                  : "Supervisor"}
-              </td>
-              <td>
-                <span
-                  className={`status ${
-                    STATUS_MAP[item.status] || "pending"
-                  }`}
-                >
-                  {item.status}
-                </span>
-              </td>
-              <td>{item.timeString}</td>
-              <td>
-                <button className="view-btn">👁</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Footer */}
-      <div className="footer">
-        <span>
-          Showing 1 to {filteredData.length} of {data.length} entries
+      {/* INSPECTION RESULT */}
+      <td>
+        <span
+          className={`inspection ${
+            item.result === "GOOD" ? "good" : "bad"
+          }`}
+        >
+          {item.result === "GOOD" ? "✔" : "✖"}{" "}
+          {item.result === "GOOD" ? "Good" : "Bad"}
         </span>
-        <div className="pagination">
-          <button disabled>Previous</button>
-          <button>Next</button>
+      </td>
+
+      {/* CREATED AT */}
+      <td>
+        <div className="created-at">
+          <div>{item.timeString.split(" ")[0]}</div>
+          <div className="time">{item.timeString.split(" ")[1]}</div>
         </div>
-      </div>
-    </div>
-  );
+      </td>
+
+      {/* APPROVAL PROGRESS */}
+      <td>
+        <div className="approval-progress">
+          <div className={`step ${item.actionBySuperVisor ? "done" : ""}`}>
+            ✓
+            <span>SUP.</span>
+          </div>
+          <div className={`step ${item.actionByManager ? "done" : ""}`}>
+            ✓
+            <span>MGR.</span>
+          </div>
+          <div className={`step ${item.actionBySeniorManager ? "done" : ""}`}>
+            ✓
+            <span>SNR.</span>
+          </div>
+        </div>
+      </td>
+
+      {/* STATUS */}
+      <td>
+        <span
+          className={`status-pill ${item.status.toLowerCase()}`}
+        >
+          {item.status === "SupervisorApproved"
+            ? "Pending"
+            : item.status}
+        </span>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
+/* Request ID */
+.request-link {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
 }
+
+/* Muted text */
+.muted {
+  color: #6b7280;
+}
+
+/* Inspection Result */
+.inspection {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.inspection.good {
+  color: #15803d;
+}
+
+.inspection.bad {
+  color: #b91c1c;
+}
+
+/* Created At */
+.created-at {
+  color: #6b7280;
+  line-height: 1.3;
+}
+
+.created-at .time {
+  font-size: 13px;
+}
+
+/* Approval Progress */
+.approval-progress {
+  display: flex;
+  gap: 16px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.step::before {
+  content: "";
+}
+
+.step span {
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.step.done {
+  color: #16a34a;
+}
+
+.step.done::before {
+  content: "✓";
+}
+
+/* Status Pill */
+.status-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 13px;
+  display: inline-block;
+}
+
+.status-pill.approved {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-pill.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-pill.pending,
+.status-pill.supervisorapproved {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+
+
