@@ -1,3 +1,4 @@
+https://chatgpt.com/s/t_696b315d544881918eab8ec81af5831f
 Yes—this is a **perfect use-case for OneNote** 👍
 Below is a **clean, copy-paste-ready OneNote structure** with **Month → Week → Topic wise reading plan**, designed exactly for **SSC CGL Tier-1 GA (2026–27)** using your **Fatboy SSC Parmar book**.
 
