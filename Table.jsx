@@ -1,3 +1,4 @@
+https://chatgpt.com/s/t_696b466d7d7c819198be0bacb595a88e
 https://chatgpt.com/s/t_696b315d544881918eab8ec81af5831f
 https://chatgpt.com/s/t_696b36ea13988191a7fc3b97415504c1
 Yes—this is a **perfect use-case for OneNote** 👍
